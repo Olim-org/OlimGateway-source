@@ -1,6 +1,8 @@
 package com.olim.gateway.filter;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -15,6 +17,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.security.Key;
+
 
 @Component
 @Slf4j
@@ -22,12 +26,12 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
 
 
-    Environment env;
-    @Value("${jwt.secret.key}")
-    private String secret;
-    public AuthorizationHeaderFilter(Environment env) {
+    private final Key secret;
+    public AuthorizationHeaderFilter(
+            @Value("${jwt.secret.key}")
+            String secretKey) {
         super(Config.class);
-        this.env = env;
+        this.secret = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
     }
 
     @Override
