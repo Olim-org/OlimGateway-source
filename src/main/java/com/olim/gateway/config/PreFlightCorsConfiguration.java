@@ -20,7 +20,6 @@ public class PreFlightCorsConfiguration {
 
     private static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Content-Length, Authorization, credential, X-XSRF-TOKEN, refresh";
     private static final String ALLOWED_METHODS = "GET, PUT, POST, DELETE, OPTIONS, PATCH";
-    private static final String ALLOWED_ORIGIN = "http://localhost:8000";
     private static final String ALLOWED_CREDENTIALS = "true";
     private static final String MAX_AGE = "3600";
 
@@ -35,8 +34,7 @@ public class PreFlightCorsConfiguration {
                 HttpHeaders requestHeaders = request.getHeaders();
                 String origin = requestHeaders.getOrigin();
 //                log.error("{} {}", requestHeaders, origin);
-                if (origin.equals("https://localhost:3000") || origin.equals("http://localhost:3000")
-                        || origin.equals("https://olim-crm-front.vercel.app")
+                if (origin.equals("https://olim-crm-front.vercel.app")
                 ) {
                     headers.add("Access-Control-Allow-Origin", origin);
                 }
